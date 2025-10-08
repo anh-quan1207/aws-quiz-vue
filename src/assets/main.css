@@ -5,29 +5,82 @@
 /* Custom base styles */
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 text-gray-900;
+    min-height: 100vh;
+  }
+  
+  * {
+    @apply scroll-smooth;
   }
 }
 
 /* Custom component styles */
 @layer components {
   .btn {
-    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200;
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 
+           transform hover:scale-105 active:scale-95 shadow-soft hover:shadow-medium;
   }
   
   .btn-primary {
-    @apply bg-primary text-white hover:bg-blue-700;
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 text-white 
+           hover:from-primary-600 hover:to-primary-700 hover:shadow-glow;
   }
   
   .btn-secondary {
-    @apply bg-secondary text-white hover:bg-orange-600;
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600 text-white 
+           hover:from-secondary-600 hover:to-secondary-700 hover:shadow-glow-purple;
   }
   
   .btn-success {
-    @apply bg-success text-white hover:bg-green-600;
+    @apply bg-gradient-to-r from-success-500 to-success-600 text-white 
+           hover:from-success-600 hover:to-success-700;
+  }
+  
+  .btn-danger {
+    @apply bg-gradient-to-r from-danger-500 to-danger-600 text-white 
+           hover:from-danger-600 hover:to-danger-700;
   }
   
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-soft p-6 
+           border border-gray-100 hover:shadow-medium transition-all duration-300;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-medium p-6 
+           border border-gray-200/50;
+  }
+  
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 
+           focus:border-primary-500 focus:ring-4 focus:ring-primary-100 
+           transition-all duration-200 outline-none;
+  }
+  
+  /* Animated gradient background */
+  .animated-gradient {
+    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+  
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Glassmorphism effect */
+  .glass {
+    @apply bg-white/20 backdrop-blur-md border border-white/30;
+  }
+  
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-hard;
   }
 }

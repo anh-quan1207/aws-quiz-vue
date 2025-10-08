@@ -1,8 +1,18 @@
 <template>
-  <div v-if="quizStore.quizStarted && !showResults" class="min-h-screen py-8">
+  <div v-if="quizStore.quizStarted && !showResults" class="min-h-screen py-8 px-4">
     <!-- Header -->
-    <header class="card bg-primary text-white text-center mb-6 max-w-7xl mx-auto">
-      <h1 class="text-3xl font-bold">AWS Certified Cloud Practitioner</h1>
+    <header class="max-w-7xl mx-auto mb-6 animate-slide-down">
+      <div class="card-gradient shadow-hard text-center">
+        <div class="flex items-center justify-center gap-3">
+          <svg class="w-8 h-8 text-primary-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 2.18l8 3.6v8.55c0 4.35-3.06 8.44-7.5 9.67-4.44-1.23-7.5-5.32-7.5-9.67V7.78l7-3.6z"/>
+            <path d="M7 10.5l3 3 6-6"/>
+          </svg>
+          <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+            AWS Cloud Practitioner Quiz
+          </h1>
+        </div>
+      </div>
     </header>
 
     <!-- Quiz Info -->
@@ -38,31 +48,44 @@
         />
 
         <!-- Study Mode Controls -->
-        <div v-if="quizStore.mode === 'study'" class="card">
+        <div v-if="quizStore.mode === 'study'" class="card-gradient shadow-medium">
           <div class="flex justify-center gap-4">
             <button
               v-if="!quizStore.studyMode.answerRevealed"
               @click="checkAnswer"
-              class="btn btn-primary"
+              class="btn btn-primary text-lg px-8 py-3 flex items-center gap-2"
               :disabled="!hasAnswer"
               :class="{ 'opacity-50 cursor-not-allowed': !hasAnswer }"
             >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+              </svg>
               Kiểm tra đáp án
             </button>
             <button
               v-else
               @click="nextOrComplete"
-              class="btn btn-secondary"
+              class="btn btn-secondary text-lg px-8 py-3 flex items-center gap-2"
             >
               {{ quizStore.isLastQuestion ? 'Hoàn thành' : 'Câu tiếp theo' }}
+              <svg v-if="!quizStore.isLastQuestion" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"/>
+              </svg>
+              <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+              </svg>
             </button>
           </div>
         </div>
 
         <!-- Exam Mode Submit -->
-        <div v-if="quizStore.mode === 'exam'" class="card">
-          <button @click="submitQuiz" class="btn btn-success w-full text-lg py-4">
-            Nộp bài
+        <div v-if="quizStore.mode === 'exam'" class="card-gradient shadow-medium">
+          <button @click="submitQuiz" class="btn btn-success w-full text-lg py-4 flex items-center justify-center gap-2">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+              <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+            </svg>
+            Nộp bài thi
           </button>
         </div>
       </div>
