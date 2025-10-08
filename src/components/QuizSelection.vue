@@ -90,7 +90,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuizStore } from '@/stores/quiz'
 import { testList } from '@/data'
-import { hasSavedState } from '@/utils/localStorage'
 
 const router = useRouter()
 const quizStore = useQuizStore()
@@ -99,26 +98,8 @@ const selectedTest = ref('test001')
 const selectedMode = ref('exam')
 
 function startQuiz() {
-  // Check if there's a saved state
-  if (hasSavedState()) {
-    const confirmed = confirm(
-      'Bạn có một bài thi đang làm dở. Bạn có muốn tiếp tục không?\n\n' +
-      'Nhấn "OK" để tiếp tục bài cũ\n' +
-      'Nhấn "Cancel" để bắt đầu bài mới'
-    )
-
-    if (confirmed) {
-      // Restore saved progress
-      const restored = quizStore.restoreProgress()
-      if (restored) {
-        router.push('/quiz')
-        return
-      }
-    } else {
-      // Clear saved state and start new quiz
-      quizStore.resetQuiz()
-    }
-  }
+  // Always clear any saved state and start fresh
+  quizStore.resetQuiz()
 
   // Start new quiz
   try {

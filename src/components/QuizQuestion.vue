@@ -19,16 +19,15 @@
         :key="index"
         class="answer-item"
         :class="getAnswerClass(index)"
-        @click="selectAnswer(index)"
       >
-        <label class="flex items-start cursor-pointer w-full">
+        <label class="flex items-start cursor-pointer w-full" @click.prevent="handleAnswerClick(index)">
           <input
             :type="isMultiSelect ? 'checkbox' : 'radio'"
             :name="`question-${questionIndex}`"
             :value="index"
-            v-model="selectedAnswer"
+            :checked="isAnswerSelected(index)"
             class="mt-1 mr-3 flex-shrink-0"
-            @click.stop="selectAnswer(index)"
+            @click.prevent
           />
           <span class="flex-1 answer-content" v-html="answer" :ref="el => answerRefs[index] = el"></span>
         </label>
@@ -76,9 +75,6 @@ const questionEl = ref(null)
 const explanationEl = ref(null)
 const answerRefs = ref([])
 
-// Local state
-const selectedAnswer = ref(props.userAnswer)
-
 // Computed
 const isMultiSelect = computed(() => {
   return props.question.assessment_type === 'multi-select'
@@ -90,9 +86,29 @@ const correctIndices = computed(() => {
   })
 })
 
+// Local state - initialize correctly for multi-select
+const selectedAnswer = ref(
+  isMultiSelect.value 
+    ? (Array.isArray(props.userAnswer) ? props.userAnswer : [])
+    : props.userAnswer
+)
+
 // Watch for changes in userAnswer prop
 watch(() => props.userAnswer, (newVal) => {
-  selectedAnswer.value = newVal
+  if (isMultiSelect.value) {
+    selectedAnswer.value = Array.isArray(newVal) ? newVal : []
+  } else {
+    selectedAnswer.value = newVal
+  }
+})
+
+// Watch for question changes to reset properly
+watch(() => props.questionIndex, () => {
+  if (isMultiSelect.value) {
+    selectedAnswer.value = Array.isArray(props.userAnswer) ? props.userAnswer : []
+  } else {
+    selectedAnswer.value = props.userAnswer
+  }
 })
 
 // Watch for changes in selectedAnswer
@@ -107,21 +123,31 @@ watch(selectedAnswer, (newVal) => {
 }, { deep: true })
 
 // Methods
-function selectAnswer(index) {
+function handleAnswerClick(index) {
   if (isMultiSelect.value) {
+    // Ensure we have an array
     if (!Array.isArray(selectedAnswer.value)) {
       selectedAnswer.value = []
     }
     
     const currentIndex = selectedAnswer.value.indexOf(index)
     if (currentIndex > -1) {
-      selectedAnswer.value.splice(currentIndex, 1)
+      // Remove if already selected
+      selectedAnswer.value = selectedAnswer.value.filter(i => i !== index)
     } else {
-      selectedAnswer.value.push(index)
+      // Add if not selected
+      selectedAnswer.value = [...selectedAnswer.value, index]
     }
   } else {
     selectedAnswer.value = index
   }
+}
+
+function isAnswerSelected(index) {
+  if (isMultiSelect.value) {
+    return Array.isArray(selectedAnswer.value) && selectedAnswer.value.includes(index)
+  }
+  return selectedAnswer.value === index
 }
 
 function getAnswerClass(index) {

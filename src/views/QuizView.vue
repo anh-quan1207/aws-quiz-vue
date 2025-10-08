@@ -86,6 +86,7 @@
       :selected-test="quizStore.selectedTest"
       :quiz-data="quizStore.quizData"
       :answers="quizStore.answers"
+      :timer="quizStore.timer"
       @view-details="showDetailedResults = true"
       @retry="retryQuiz"
     />
@@ -180,8 +181,12 @@ function retryQuiz() {
 // Warn before leaving page
 function handleBeforeUnload(e) {
   if (quizStore.quizStarted && !quizStore.quizCompleted) {
+    const modeText = quizStore.mode === 'exam' ? 'thi' : 'học'
+    const message = `Bạn đang làm bài ${modeText} dở. Bạn có chắc chắn muốn thoát ra không?`
+    
     e.preventDefault()
-    e.returnValue = ''
+    e.returnValue = message
+    return message
   }
 }
 
@@ -197,6 +202,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('beforeunload', handleBeforeUnload)
+  // Stop timer when component unmounts
+  quizStore.stopTimer()
 })
 </script>
 

@@ -9,8 +9,13 @@
     </div>
 
     <!-- Test Info -->
-    <div class="text-lg mb-4 text-gray-600">
+    <div class="text-lg mb-2 text-gray-600">
       Bộ đề: <strong>{{ selectedTest.toUpperCase() }}</strong>
+    </div>
+
+    <!-- Time Spent -->
+    <div class="text-base mb-6 text-gray-600">
+      Thời gian làm bài: <strong>{{ formattedDuration }}</strong>
     </div>
 
     <!-- Pass/Fail Badge -->
@@ -58,6 +63,10 @@ const props = defineProps({
     type: Object,
     required: true
   },
+  timer: {
+    type: Object,
+    default: () => ({ minutes: 0, seconds: 0 })
+  },
   selectedTest: {
     type: String,
     required: true
@@ -73,6 +82,14 @@ const props = defineProps({
 })
 
 defineEmits(['view-details', 'retry'])
+
+const formattedDuration = computed(() => {
+  const minutes = (props.timer && typeof props.timer.minutes === 'number') ? props.timer.minutes : 0
+  const seconds = (props.timer && typeof props.timer.seconds === 'number') ? props.timer.seconds : 0
+  const m = String(minutes).padStart(2, '0')
+  const s = String(seconds).padStart(2, '0')
+  return `${m}:${s}`
+})
 
 function getOverviewClass(index) {
   const question = props.quizData.questions[index]

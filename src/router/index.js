@@ -36,13 +36,17 @@ router.beforeEach((to, from, next) => {
   // Warn when leaving quiz page if quiz is in progress
   if (from.name === 'quiz' && to.name !== 'quiz') {
     if (quizStore.quizStarted && !quizStore.quizCompleted) {
+      const modeText = quizStore.mode === 'exam' ? 'thi' : 'học'
       const confirmed = confirm(
-        'Bạn đang làm bài thi. Bạn có chắc chắn muốn rời khỏi trang này?\n\n' +
-        'Tiến trình của bạn đã được lưu tự động.'
+        `Bạn đang làm bài ${modeText} dở. Bạn có chắc chắn muốn thoát ra không?\n\n` +
+        'Tiến trình của bạn sẽ bị mất.'
       )
       if (confirmed) {
+        // Clear saved state when confirmed to leave
+        quizStore.resetQuiz()
         next()
       } else {
+        // Stay on quiz page
         next(false)
       }
       return

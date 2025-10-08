@@ -118,12 +118,11 @@ export const useQuizStore = defineStore('quiz', () => {
   }
 
   function startTimer() {
+    // Always stop any existing timer first
+    stopTimer()
+    
     timer.value.minutes = 0
     timer.value.seconds = 0
-    
-    if (timer.value.interval) {
-      clearInterval(timer.value.interval)
-    }
 
     timer.value.interval = setInterval(() => {
       timer.value.seconds++
@@ -205,6 +204,9 @@ export const useQuizStore = defineStore('quiz', () => {
   function restoreProgress() {
     const saved = loadQuizState()
     if (!saved) return false
+
+    // Stop any existing timer first
+    stopTimer()
 
     currentQuestion.value = saved.currentQuestion
     answers.value = saved.answers
