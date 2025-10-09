@@ -1,5 +1,5 @@
 <template>
-  <div class="card-gradient shadow-medium">
+  <div class="card shadow-soft">
     <div class="flex flex-wrap justify-between items-center gap-4">
       <!-- Progress Info -->
       <div class="flex items-center gap-4 flex-wrap">

@@ -1,33 +1,27 @@
 <template>
-  <div class="card-gradient shadow-medium animate-scale-in">
+  <div class="card shadow-medium animate-scale-in">
     <!-- Question Header -->
-    <div class="flex items-start gap-3 mb-4 pb-4 border-b border-gray-200">
-      <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white font-bold shadow-soft">
+    <div class="flex items-start gap-3 mb-4 pb-4 border-b border-navy-200">
+      <div class="flex-shrink-0 w-8 h-8 bg-navy-800 rounded flex items-center justify-center text-white font-bold text-sm">
         {{ questionIndex + 1 }}
       </div>
       <div class="flex-1">
-        <div class="text-sm text-gray-500 font-medium mb-1">Câu hỏi {{ questionIndex + 1 }}</div>
-        <div class="flex items-center gap-2">
-          <span class="badge" :class="isMultiSelect ? 'bg-secondary-100 text-secondary-700 border border-secondary-200' : 'bg-primary-100 text-primary-700 border border-primary-200'">
-            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path v-if="isMultiSelect" fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2h-1.528A6 6 0 004 9.528V4zm2 6a4 4 0 00.5 7.969L6 18a2 2 0 002 2h6a2 2 0 002-2v-1.528A4.002 4.002 0 0013 6a4 4 0 00-7 4z"/>
-              <path v-else d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/>
-            </svg>
-            {{ isMultiSelect ? 'Chọn nhiều đáp án' : 'Chọn một đáp án' }}
-          </span>
+        <div class="text-xs text-navy-500 font-semibold mb-1 uppercase tracking-wide">Question {{ questionIndex + 1 }}</div>
+        <div class="badge bg-primary-100 text-primary-700">
+          {{ isMultiSelect ? 'Multiple Choice' : 'Single Choice' }}
         </div>
       </div>
     </div>
 
     <!-- Question Text -->
     <div
-      class="text-base mb-6 question-content text-gray-800 leading-relaxed"
+      class="text-base mb-6 question-content text-navy-900 leading-relaxed"
       v-html="question.prompt.question"
       ref="questionEl"
     ></div>
 
     <!-- Answers List -->
-    <ul class="space-y-3">
+    <ul class="space-y-2">
       <li
         v-for="(answer, index) in question.prompt.answers"
         :key="index"
@@ -37,17 +31,17 @@
         <label class="flex items-start cursor-pointer w-full p-4" @click.prevent="handleAnswerClick(index)">
           <div class="flex-shrink-0 mt-0.5">
             <div v-if="isMultiSelect" class="w-5 h-5 rounded border-2 transition-all duration-200 flex items-center justify-center"
-                 :class="isAnswerSelected(index) ? 'bg-primary-500 border-primary-500' : 'border-gray-300 group-hover:border-primary-400'">
-              <svg v-if="isAnswerSelected(index)" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                 :class="isAnswerSelected(index) ? 'bg-primary-500 border-primary-500' : 'border-navy-300 group-hover:border-primary-400'">
+              <svg v-if="isAnswerSelected(index)" class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
               </svg>
             </div>
             <div v-else class="w-5 h-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center"
-                 :class="isAnswerSelected(index) ? 'border-primary-500' : 'border-gray-300 group-hover:border-primary-400'">
+                 :class="isAnswerSelected(index) ? 'border-primary-500' : 'border-navy-300 group-hover:border-primary-400'">
               <div v-if="isAnswerSelected(index)" class="w-3 h-3 rounded-full bg-primary-500"></div>
             </div>
           </div>
-          <span class="flex-1 ml-4 answer-content text-gray-700" v-html="answer" :ref="el => answerRefs[index] = el"></span>
+          <span class="flex-1 ml-3 answer-content text-navy-800" v-html="answer" :ref="el => answerRefs[index] = el"></span>
         </label>
       </li>
     </ul>
@@ -55,15 +49,13 @@
     <!-- Explanation (only in study mode when revealed) -->
     <div
       v-if="mode === 'study' && answerRevealed"
-      class="mt-6 p-5 bg-gradient-to-br from-primary-50 to-blue-50 rounded-xl border-l-4 border-primary-500 animate-slide-down"
+      class="mt-6 p-4 bg-primary-50 rounded-lg border-l-2 border-primary-500 animate-slide-down"
     >
-      <div class="flex items-center gap-2 mb-3">
-        <svg class="w-6 h-6 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
-        </svg>
-        <h3 class="font-bold text-primary-700 text-lg">Giải thích chi tiết:</h3>
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-1.5 h-1.5 bg-primary-500 rounded-full"></div>
+        <h3 class="font-bold text-navy-900 text-sm uppercase tracking-wide">Explanation</h3>
       </div>
-      <div class="explanation-content text-gray-700 leading-relaxed" v-html="question.prompt.explanation" ref="explanationEl"></div>
+      <div class="explanation-content text-navy-700 leading-relaxed text-sm" v-html="question.prompt.explanation" ref="explanationEl"></div>
     </div>
   </div>
 </template>
@@ -237,21 +229,21 @@ onUpdated(() => {
 
 <style scoped>
 .answer-item {
-  @apply border-2 border-gray-200 rounded-xl cursor-pointer 
-         transition-all duration-300 hover:border-primary-400 hover:bg-primary-50 
-         hover:-translate-y-0.5 hover:shadow-soft bg-white;
+  @apply border border-navy-200 rounded-lg cursor-pointer 
+         transition-all duration-200 hover:border-primary-300 hover:bg-navy-50
+         bg-white;
 }
 
 .answer-item.selected {
-  @apply border-primary-500 bg-gradient-to-br from-primary-50 to-white shadow-soft;
+  @apply border-primary-500 bg-primary-50;
 }
 
 .answer-item.correct {
-  @apply border-success-500 bg-gradient-to-br from-success-50 to-white shadow-soft;
+  @apply border-success-500 bg-success-50;
 }
 
 .answer-item.incorrect {
-  @apply border-danger-500 bg-gradient-to-br from-danger-50 to-white shadow-soft;
+  @apply border-danger-500 bg-danger-50;
 }
 
 :deep(.question-content img),

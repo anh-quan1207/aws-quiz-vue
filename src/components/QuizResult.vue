@@ -1,10 +1,10 @@
 <template>
   <div class="max-w-5xl mx-auto px-4 animate-scale-in">
-    <div class="card-gradient shadow-hard text-center">
+    <div class="card shadow-hard text-center">
       <!-- Header -->
       <div class="mb-8">
-        <div class="inline-flex items-center justify-center w-20 h-20 mb-4 rounded-full"
-             :class="results.passed ? 'bg-gradient-to-br from-success-400 to-success-600' : 'bg-gradient-to-br from-danger-400 to-danger-600'">
+        <div class="inline-flex items-center justify-center w-20 h-20 mb-4 rounded-lg"
+             :class="results.passed ? 'bg-success-500' : 'bg-danger-500'">
           <svg v-if="results.passed" class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
           </svg>
@@ -12,31 +12,31 @@
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
           </svg>
         </div>
-        <h1 class="text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-3">
-          Kết quả bài thi
+        <h1 class="text-3xl font-bold text-navy-900 mb-3">
+          Quiz Results
         </h1>
         <span
-          class="inline-block px-8 py-3 rounded-2xl font-bold text-xl shadow-hard"
-          :class="results.passed ? 'bg-gradient-to-r from-success-500 to-success-600 text-white' : 'bg-gradient-to-r from-danger-500 to-danger-600 text-white'"
+          class="inline-block px-6 py-2 rounded-lg font-bold text-lg"
+          :class="results.passed ? 'bg-success-500 text-white' : 'bg-danger-500 text-white'"
         >
-          {{ results.passed ? '🎉 ĐẠT' : '😔 KHÔNG ĐẠT' }}
+          {{ results.passed ? 'PASSED' : 'FAILED' }}
         </span>
       </div>
 
       <!-- Score Display -->
-      <div class="mb-8 p-8 bg-gradient-to-br from-primary-50 to-purple-50 rounded-2xl">
-        <div class="text-6xl font-extrabold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-3">
+      <div class="mb-8 p-8 bg-navy-50 rounded-lg border border-navy-200">
+        <div class="text-6xl font-bold text-navy-900 mb-3 font-mono">
           {{ results.score }}%
         </div>
-        <div class="text-xl text-gray-600 font-medium">
+        <div class="text-lg text-navy-600 font-medium">
           {{ results.correctAnswers }}/{{ results.totalQuestions }} câu đúng
         </div>
         
         <!-- Progress Bar -->
-        <div class="mt-6 w-full max-w-md mx-auto h-4 bg-gray-200 rounded-full overflow-hidden">
+        <div class="mt-6 w-full max-w-md mx-auto h-2 bg-navy-200 rounded overflow-hidden">
           <div 
             class="h-full transition-all duration-1000 ease-out"
-            :class="results.passed ? 'bg-gradient-to-r from-success-500 to-success-600' : 'bg-gradient-to-r from-danger-500 to-danger-600'"
+            :class="results.passed ? 'bg-success-500' : 'bg-danger-500'"
             :style="{ width: `${results.score}%` }"
           ></div>
         </div>
@@ -44,7 +44,7 @@
 
       <!-- Test Info -->
       <div class="grid md:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
-        <div class="p-4 bg-white rounded-xl border border-gray-200">
+        <div class="p-4 bg-white rounded-lg border border-navy-200">
           <div class="flex items-center justify-center gap-2 text-gray-600">
             <svg class="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
@@ -66,7 +66,7 @@
       </div>
 
       <!-- Question Overview -->
-      <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl mb-8 border border-gray-200">
+      <div class="bg-navy-50 p-6 rounded-lg mb-8 border border-navy-200">
         <div class="flex items-center justify-center gap-2 mb-5">
           <svg class="w-6 h-6 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
             <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
@@ -170,23 +170,20 @@ function getOverviewClass(index) {
 
 <style scoped>
 .overview-item {
-  @apply aspect-square flex items-center justify-center rounded-xl font-bold text-sm
-         transition-all duration-300 hover:scale-110 cursor-default;
+  @apply aspect-square flex items-center justify-center rounded font-bold text-sm
+         transition-all duration-200 cursor-default border;
 }
 
 .overview-item.correct {
-  @apply bg-gradient-to-br from-success-100 to-success-200 border-2 border-success-400 
-         text-success-700 shadow-soft;
+  @apply bg-success-100 border-success-500 text-success-700;
 }
 
 .overview-item.incorrect {
-  @apply bg-gradient-to-br from-danger-100 to-danger-200 border-2 border-danger-400 
-         text-danger-700 shadow-soft;
+  @apply bg-danger-100 border-danger-500 text-danger-700;
 }
 
 .overview-item.unanswered {
-  @apply bg-gradient-to-br from-warning-100 to-warning-200 border-2 border-warning-400 
-         text-warning-700 shadow-soft;
+  @apply bg-warning-100 border-warning-500 text-warning-700;
 }
 </style>
 
