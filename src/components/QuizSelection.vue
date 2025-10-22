@@ -46,16 +46,47 @@
         <div class="text-sm font-semibold text-navy-700 mb-3 uppercase tracking-wide">
           Select Test
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <div
-            v-for="test in testList"
-            :key="test.id"
-            class="test-card"
-            :class="{ selected: selectedTest === test.id }"
-            @click="selectedTest = test.id"
-          >
-            <div class="font-semibold text-navy-900 text-center">
-              {{ test.name }}
+        
+        <!-- General Tests -->
+        <div class="mb-6">
+          <div class="text-xs font-medium text-navy-600 mb-2 uppercase tracking-wide">
+            General Tests
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div
+              v-for="test in generalTests"
+              :key="test.id"
+              class="test-card"
+              :class="{ selected: selectedTest === test.id }"
+              @click="selectedTest = test.id"
+            >
+              <div class="font-semibold text-navy-900 text-center">
+                {{ test.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AWS Tests -->
+        <div class="mb-6">
+          <div class="text-xs font-medium text-navy-600 mb-2 uppercase tracking-wide">
+            AWS Certified Solutions Architect Associate SAA-C03
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div
+              v-for="test in awsTests"
+              :key="test.id"
+              class="test-card aws-card"
+              :class="{ selected: selectedTest === test.id }"
+              @click="selectedTest = test.id"
+            >
+              <div class="flex items-center gap-2 mb-1">
+                <div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                <div class="text-xs font-medium text-orange-600 uppercase tracking-wide">AWS</div>
+              </div>
+              <div class="font-semibold text-navy-900 text-center">
+                {{ test.name }}
+              </div>
             </div>
           </div>
         </div>
@@ -72,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuizStore } from '@/stores/quiz'
 import { testList } from '@/data'
@@ -82,6 +113,15 @@ const quizStore = useQuizStore()
 
 const selectedTest = ref('test001')
 const selectedMode = ref('exam')
+
+// Computed properties to separate tests by category
+const generalTests = computed(() => {
+  return testList.filter(test => !test.category)
+})
+
+const awsTests = computed(() => {
+  return testList.filter(test => test.category === 'AWS')
+})
 
 function startQuiz() {
   // Always clear any saved state and start fresh
@@ -117,6 +157,14 @@ function startQuiz() {
 
 .test-card.selected {
   @apply border-primary-500 bg-primary-50 text-primary-700;
+}
+
+.aws-card {
+  @apply border-orange-200 hover:border-orange-300;
+}
+
+.aws-card.selected {
+  @apply border-orange-500 bg-orange-50 text-orange-700;
 }
 </style>
 
